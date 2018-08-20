@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "0.1.0"
+group = "net.voxelindustry.as"
+archivesBaseName = "arcanumscripta"
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "1.12.2-14.23.4.2705"
+    runDir = "run"
+
+    mappings = "stable_39"
+}
+
+repositories {
+    maven { // Concrete
+        name = 'elytradev'
+        url = "http://repo.elytradev.com"
+    }
+    maven { // TeaBeans
+        name = 'ourten'
+        url = 'http://maven.ferenyr.info/artifactory/ourten'
+    }
+    maven { // BrokkGUI
+        name = 'yggard'
+        url = 'http://maven.ferenyr.info/artifactory/yggard'
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+
+    compile 'org.yggard:brokkgui-binding-mc1.12:1.0.0-24-SNAPSHOT'
+
+    compile 'com.elytradev.concrete:concrete-common:0.5.40'
+    compile 'com.elytradev.concrete:concrete-reflect:0.5.40'
+    compile 'com.elytradev.concrete:concrete-network:0.5.40'
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
