@@ -13,7 +13,7 @@ import static net.minecraft.util.text.TextFormatting.ITALIC;
 
 public class GuiSpellPrompt extends BrokkGuiScreen
 {
-    private static final int WIDTH  = 250;
+    private static final int WIDTH = 250;
     private static final int HEIGHT = 100;
 
     private final BaseProperty<Float> DUMMY_HEIGHT = new BaseProperty<>(HEIGHT / 2f - 10, "dummyHeightProperty");
@@ -130,12 +130,22 @@ public class GuiSpellPrompt extends BrokkGuiScreen
         {
             if (isNextKey(e.getKey()) || (typeField.getCursorPos() == typeField.getText().length() && e.getKey() == Keyboard.KEY_RIGHT))
                 targetField.setFocused();
+            else if (typeField.getCursorPos() == 0 && (e.getKey() == Keyboard.KEY_DELETE || e.getKey() == Keyboard.KEY_LEFT))
+                actionField.setFocused();
         });
 
         targetField.getEventDispatcher().addHandler(KeyEvent.TYPE, e ->
         {
             if (isNextKey(e.getKey()) || (targetField.getCursorPos() == targetField.getText().length() && e.getKey() == Keyboard.KEY_RIGHT))
                 amountField.setFocused();
+            else if (targetField.getCursorPos() == 0 && (e.getKey() == Keyboard.KEY_DELETE || e.getKey() == Keyboard.KEY_LEFT))
+                typeField.setFocused();
+        });
+
+        amountField.getEventDispatcher().addHandler(KeyEvent.TYPE, e ->
+        {
+            if (amountField.getCursorPos() == 0 && (e.getKey() == Keyboard.KEY_DELETE || e.getKey() == Keyboard.KEY_LEFT))
+                targetField.setFocused();
         });
     }
 
