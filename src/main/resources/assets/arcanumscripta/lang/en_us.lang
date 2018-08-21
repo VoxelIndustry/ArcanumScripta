@@ -1,1 +1,6 @@
 key.spellprompt.desc=Spell Prompt
+
+arcanumscripta.spell.part.action=action
+arcanumscripta.spell.part.type=type
+arcanumscripta.spell.part.target=target
+arcanumscripta.spell.part.amount=amount
