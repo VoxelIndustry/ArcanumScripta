@@ -43,7 +43,7 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.2'
 
-    compile 'org.yggard:brokkgui-binding-mc1.12:1.0.0-24-SNAPSHOT'
+    compile 'org.yggard:brokkgui-binding-mc1.12:1.0.0-26-SNAPSHOT'
 
     compile 'com.elytradev.concrete:concrete-common:0.5.40'
     compile 'com.elytradev.concrete:concrete-reflect:0.5.40'

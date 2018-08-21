@@ -1,0 +1,19 @@
+textfield text {
+    -shadow: false;
+}
+
+#action-field text {
+    -color: #e09e1a;
+}
+
+#type-field text {
+    -color: #1a6899;
+}
+
+#target-field  text{
+    -color: #771d13;
+}
+
+#amount-field text {
+    -color: #18600d;
+}

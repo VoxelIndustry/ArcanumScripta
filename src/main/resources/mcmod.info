@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "arcanumscripta",
+    "name": "Arcanum Scripta",
+    "description": "Spells.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["Ourten"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
