@@ -18,7 +18,7 @@ public class SpellTextField extends GuiTextfieldComplete
     {
         super();
         this.setPromptText(ITALIC + I18n.format(part.getUnlocalizedName()));
-        this.setCharBeforeCompletion(1);
+        this.setCharBeforeCompletion(0);
         this.setID(part.toString() + "-field");
 
         this.setExpandToText(true);
@@ -47,7 +47,6 @@ public class SpellTextField extends GuiTextfieldComplete
 
         this.getEventDispatcher().addHandler(KeyEvent.TYPE, e ->
         {
-            System.out.println(resetCursor);
             if (isNextKey(e.getKey()) || (this.getCursorPos() == this.getText().length() && e.getKey() == Keyboard.KEY_RIGHT))
             {
                 this.setText(this.getText().trim());
@@ -63,10 +62,7 @@ public class SpellTextField extends GuiTextfieldComplete
             }
         });
 
-        this.setOnCursorMoveEvent(e ->
-        {
-            resetCursor = e.getMouseX() == 0 && e.getMouseY() == 0;
-        });
+        this.setOnCursorMoveEvent(e -> resetCursor = e.getMouseX() == 0 && e.getMouseY() == 0);
     }
 
     private boolean isNextKey(int key)

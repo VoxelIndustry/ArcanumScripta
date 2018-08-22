@@ -1,8 +1,14 @@
 package net.voxelindustry.as.client.gui;
 
 import fr.ourten.teabeans.value.BaseProperty;
+import net.voxelindustry.as.common.data.ISpellComponent;
+import net.voxelindustry.as.common.data.SpellAction;
+import net.voxelindustry.as.common.data.SpellGraph;
 import org.yggard.brokkgui.gui.BrokkGuiScreen;
 import org.yggard.brokkgui.panel.GuiAbsolutePane;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class GuiSpellPrompt extends BrokkGuiScreen
 {
@@ -11,6 +17,7 @@ public class GuiSpellPrompt extends BrokkGuiScreen
 
     public final static BaseProperty<Float> DUMMY_HEIGHT = new BaseProperty<>(HEIGHT / 2f - 10, "dummyHeightProperty");
 
+    private SpellGraph     graph = new SpellGraph();
     private SpellTextField actionField;
     private SpellTextField typeField;
     private SpellTextField targetField;
@@ -31,13 +38,16 @@ public class GuiSpellPrompt extends BrokkGuiScreen
     private void setupFields(GuiAbsolutePane mainPanel)
     {
         actionField = new SpellTextField(SpellPart.ACTION, this, mainPanel);
-        actionField.addSuggestion("throw");
-        actionField.addSuggestion("summon");
-        actionField.addSuggestion("cast");
+        actionField.setSuggestions(Arrays.stream(SpellAction.values()).map(SpellAction::toString).collect(Collectors.toList()));
 
         typeField = new SpellTextField(SpellPart.TYPE, this, mainPanel, actionField);
-        typeField.addSuggestion("fireball");
-        typeField.addSuggestion("lightning");
+
+        actionField.getTextProperty().addListener(obs ->
+        {
+            if (Arrays.stream(SpellAction.values()).anyMatch(spell -> spell.toString().equals(actionField.getText())))
+                typeField.setSuggestions(graph.getGraph().successors(SpellAction.valueOf(actionField.getText().toUpperCase()))
+                        .stream().map(ISpellComponent::getName).collect(Collectors.toList()));
+        });
 
         targetField = new SpellTextField(SpellPart.TARGET, this, mainPanel, actionField, typeField);
         targetField.addSuggestion("me");
