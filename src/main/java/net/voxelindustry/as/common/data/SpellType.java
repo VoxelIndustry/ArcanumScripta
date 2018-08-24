@@ -12,6 +12,7 @@ public class SpellType implements ISpellComponent
     private float                cost;
     private String               name;
     private EnumSet<SpellTarget> targets;
+    private boolean              continuous;
 
     @Override
     public boolean isCostMultiplier()
@@ -29,6 +30,7 @@ public class SpellType implements ISpellComponent
         private float                cost;
         private String               name;
         private EnumSet<SpellTarget> targets;
+        private boolean              continuous;
 
         public Builder()
         {
@@ -53,9 +55,15 @@ public class SpellType implements ISpellComponent
             return this;
         }
 
+        public Builder continuous()
+        {
+            this.continuous = true;
+            return this;
+        }
+
         public SpellType create()
         {
-            SpellType type = new SpellType(cost, name, targets);
+            SpellType type = new SpellType(cost, name, targets, continuous);
             SpellTypes.TYPES.add(type);
             return type;
         }

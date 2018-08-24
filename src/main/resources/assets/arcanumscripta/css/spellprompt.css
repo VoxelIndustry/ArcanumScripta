@@ -1,4 +1,4 @@
-textfield text {
+text {
     -shadow: false;
 }
 
@@ -10,7 +10,11 @@ textfield text {
     -color: #1a6899;
 }
 
-#target-field  text{
+#target-field text {
+    -color: #771d13;
+}
+
+#target-prefix-label text {
     -color: #771d13;
 }
 

@@ -1,15 +1,18 @@
 package net.voxelindustry.as.client.gui;
 
+import fr.ourten.teabeans.binding.BaseBinding;
 import fr.ourten.teabeans.value.BaseProperty;
 import net.minecraft.client.resources.I18n;
-import net.voxelindustry.as.common.data.ISpellComponent;
-import net.voxelindustry.as.common.data.SpellAction;
-import net.voxelindustry.as.common.data.SpellGraph;
-import net.voxelindustry.as.common.data.SpellTypes;
+import net.voxelindustry.as.common.data.*;
+import org.yggard.brokkgui.data.EAlignment;
+import org.yggard.brokkgui.data.RectOffset;
+import org.yggard.brokkgui.data.RelativeBindingHelper;
+import org.yggard.brokkgui.element.GuiLabel;
 import org.yggard.brokkgui.gui.BrokkGuiScreen;
 import org.yggard.brokkgui.panel.GuiAbsolutePane;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GuiSpellPrompt extends BrokkGuiScreen
@@ -24,6 +27,7 @@ public class GuiSpellPrompt extends BrokkGuiScreen
     private SpellTextField typeField;
     private SpellTextField targetField;
     private SpellTextField amountField;
+    private GuiLabel       targetPrefixLabel;
 
     public GuiSpellPrompt()
     {
@@ -52,18 +56,54 @@ public class GuiSpellPrompt extends BrokkGuiScreen
                         .stream().map(ISpellComponent::getName).collect(Collectors.toList()));
         });
 
-        targetField = new SpellTextField(SpellPart.TARGET, this, mainPanel, actionField, typeField);
+        targetPrefixLabel = new GuiLabel("");
+        targetPrefixLabel.setExpandToText(true);
+        targetPrefixLabel.setHeight(20);
+        targetPrefixLabel.setID("target-prefix-label");
+        targetPrefixLabel.setTextAlignment(EAlignment.MIDDLE_UP);
+        targetPrefixLabel.setTextPadding(new RectOffset(2, 0, 0, 0));
+        mainPanel.addChild(targetPrefixLabel);
+
+        RelativeBindingHelper.bindToPos(targetPrefixLabel, mainPanel, new BaseBinding<Float>()
+        {
+            {
+                super.bind(actionField.getWidthProperty(), typeField.getWidthProperty());
+            }
+
+            @Override
+            public Float computeValue()
+            {
+                return actionField.getWidth() + typeField.getWidth() + 4;
+            }
+        }, GuiSpellPrompt.DUMMY_HEIGHT);
+
+        targetField = new SpellTextField(SpellPart.TARGET, this, mainPanel, actionField, typeField, targetPrefixLabel);
+        amountField = new SpellTextField(SpellPart.AMOUNT, this, mainPanel, actionField,
+                typeField, targetPrefixLabel, targetField);
 
         typeField.getTextProperty().addListener(obs ->
         {
             SpellTypes.TYPES.stream().filter(spell -> spell.getName().equals(typeField.getText())).forEach(spell ->
-                    targetField.setSuggestions(spell.getTargets().stream()
-                            .map(spellTarget -> I18n.format(spellTarget.getUnlocalizedName())).collect(Collectors.toList())));
+            {
+                targetField.setSuggestions(spell.getTargets().stream()
+                        .map(spellTarget -> I18n.format(spellTarget.getUnlocalizedName())).collect(Collectors.toList()));
+
+                amountField.setSuggestions(Arrays.asList("once", "twice", "thrice"));
+                if (spell.isContinuous())
+                    amountField.addSuggestion("forever");
+            });
         });
 
-        amountField = new SpellTextField(SpellPart.AMOUNT, this, mainPanel, actionField, typeField, targetField);
-        amountField.addSuggestion("once");
+        targetField.getTextProperty().addListener(obs ->
+        {
+            Optional<SpellTarget> target = Arrays.stream(SpellTarget.values())
+                    .filter(spell -> I18n.format(spell.getUnlocalizedName()).equals(targetField.getText())).findFirst();
 
+            if (target.isPresent())
+                targetPrefixLabel.setText(I18n.format(target.get().getUnlocalizedPrefix()));
+            else
+                targetPrefixLabel.setText("");
+        });
         mainPanel.addChild(actionField, 0, HEIGHT / 2f - 10);
     }
 

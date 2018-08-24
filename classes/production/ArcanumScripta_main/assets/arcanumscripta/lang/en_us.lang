@@ -4,3 +4,15 @@ arcanumscripta.spell.part.action=action
 arcanumscripta.spell.part.type=type
 arcanumscripta.spell.part.target=target
 arcanumscripta.spell.part.amount=amount
+
+arcanumscripta.spell.target.singleblock=block
+arcanumscripta.spell.target.singleplayer=player
+arcanumscripta.spell.target.worldarea=zone
+arcanumscripta.spell.target.groupplayer=players group
+arcanumscripta.spell.target.allplayer=everyone
+
+arcanumscripta.spell.target.singleblock.prefix=at a
+arcanumscripta.spell.target.singleplayer.prefix=at a
+arcanumscripta.spell.target.worldarea.prefix=in a
+arcanumscripta.spell.target.groupplayer.prefix=to a
+arcanumscripta.spell.target.allplayer.prefix=to

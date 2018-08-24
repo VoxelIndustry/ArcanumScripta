@@ -3,6 +3,7 @@ package net.voxelindustry.as.client.gui;
 import fr.ourten.teabeans.binding.BaseBinding;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
+import org.yggard.brokkgui.component.GuiNode;
 import org.yggard.brokkgui.data.RelativeBindingHelper;
 import org.yggard.brokkgui.element.GuiTextfieldComplete;
 import org.yggard.brokkgui.event.KeyEvent;
@@ -14,7 +15,7 @@ public class SpellTextField extends GuiTextfieldComplete
 {
     private boolean resetCursor = true;
 
-    public SpellTextField(SpellPart part, GuiSpellPrompt prompt, GuiPane mainPanel, SpellTextField... fields)
+    public SpellTextField(SpellPart part, GuiSpellPrompt prompt, GuiPane mainPanel, GuiNode... nodes)
     {
         super();
         this.setPromptText(ITALIC + I18n.format(part.getUnlocalizedName()));
@@ -24,22 +25,22 @@ public class SpellTextField extends GuiTextfieldComplete
         this.setExpandToText(true);
         this.setHeight(20);
 
-        if (fields.length != 0)
+        if (nodes.length != 0)
         {
             mainPanel.addChild(this);
             RelativeBindingHelper.bindToPos(this, mainPanel, new BaseBinding<Float>()
             {
                 {
-                    for (SpellTextField field : fields)
-                        super.bind(field.getWidthProperty());
+                    for (GuiNode node : nodes)
+                        super.bind(node.getWidthProperty());
                 }
 
                 @Override
                 public Float computeValue()
                 {
                     float result = 0;
-                    for (SpellTextField field : fields)
-                        result += field.getWidth() + 2;
+                    for (GuiNode node : nodes)
+                        result += node.getWidth() + 2;
                     return result;
                 }
             }, GuiSpellPrompt.DUMMY_HEIGHT);
