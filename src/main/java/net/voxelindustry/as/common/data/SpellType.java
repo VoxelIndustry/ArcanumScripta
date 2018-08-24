@@ -55,7 +55,9 @@ public class SpellType implements ISpellComponent
 
         public SpellType create()
         {
-            return new SpellType(cost, name, targets);
+            SpellType type = new SpellType(cost, name, targets);
+            SpellTypes.TYPES.add(type);
+            return type;
         }
     }
 }

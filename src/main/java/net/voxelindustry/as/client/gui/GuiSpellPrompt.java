@@ -1,9 +1,11 @@
 package net.voxelindustry.as.client.gui;
 
 import fr.ourten.teabeans.value.BaseProperty;
+import net.minecraft.client.resources.I18n;
 import net.voxelindustry.as.common.data.ISpellComponent;
 import net.voxelindustry.as.common.data.SpellAction;
 import net.voxelindustry.as.common.data.SpellGraph;
+import net.voxelindustry.as.common.data.SpellTypes;
 import org.yggard.brokkgui.gui.BrokkGuiScreen;
 import org.yggard.brokkgui.panel.GuiAbsolutePane;
 
@@ -39,6 +41,7 @@ public class GuiSpellPrompt extends BrokkGuiScreen
     {
         actionField = new SpellTextField(SpellPart.ACTION, this, mainPanel);
         actionField.setSuggestions(Arrays.stream(SpellAction.values()).map(SpellAction::toString).collect(Collectors.toList()));
+        actionField.setFocused();
 
         typeField = new SpellTextField(SpellPart.TYPE, this, mainPanel, actionField);
 
@@ -50,9 +53,13 @@ public class GuiSpellPrompt extends BrokkGuiScreen
         });
 
         targetField = new SpellTextField(SpellPart.TARGET, this, mainPanel, actionField, typeField);
-        targetField.addSuggestion("me");
-        targetField.addSuggestion("attacker");
-        targetField.addSuggestion("anyone");
+
+        typeField.getTextProperty().addListener(obs ->
+        {
+            SpellTypes.TYPES.stream().filter(spell -> spell.getName().equals(typeField.getText())).forEach(spell ->
+                    targetField.setSuggestions(spell.getTargets().stream()
+                            .map(spellTarget -> I18n.format(spellTarget.getUnlocalizedName())).collect(Collectors.toList())));
+        });
 
         amountField = new SpellTextField(SpellPart.AMOUNT, this, mainPanel, actionField, typeField, targetField);
         amountField.addSuggestion("once");

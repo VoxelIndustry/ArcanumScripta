@@ -4,3 +4,9 @@ arcanumscripta.spell.part.action=action
 arcanumscripta.spell.part.type=type
 arcanumscripta.spell.part.target=target
 arcanumscripta.spell.part.amount=amount
+
+arcanumscripta.spell.target.singleblock=block
+arcanumscripta.spell.target.singleplayer=player
+arcanumscripta.spell.target.worldarea=zone
+arcanumscripta.spell.target.groupplayer=players group
+arcanumscripta.spell.target.allplayer=everyone

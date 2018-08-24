@@ -1,9 +1,14 @@
 package net.voxelindustry.as.common.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static net.voxelindustry.as.common.data.SpellTarget.*;
 
 public class SpellTypes
 {
+    public static final List<SpellType> TYPES = new ArrayList<>();
+
     public static final SpellType FIREBALL = SpellType.build().name("fireball").cost(10)
             .target(SINGULAR_PLAYER).target(SINGULAR_BLOCK).create();
 
